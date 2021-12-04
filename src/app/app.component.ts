@@ -1,3 +1,4 @@
+import { PostDataService } from './post-data.service';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
@@ -9,7 +10,9 @@ import { HttpClient } from '@angular/common/http';
 export class AppComponent implements OnInit {
   loadedPosts = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private postDataService: PostDataService) { }
 
   ngOnInit() {}
 
@@ -17,9 +20,10 @@ export class AppComponent implements OnInit {
     // Send Http request
     console.log(postData);
   }
-
+  
   onFetchPosts() {
     // Send Http request
+    this.postDataService.fetchPosts().subscribe(console.log);
   }
 
   onClearPosts() {
