@@ -12,7 +12,9 @@ export class PostDataService {
 
   createPost({ title, content}) {
     return this.http.post(this.baseUrl + '/posts.json',
-      { title, content });
+      { title, content },
+      { observe: 'response' }
+    );
   }
 
   fetchPosts() {
