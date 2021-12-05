@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 
@@ -10,20 +10,33 @@ export class PostDataService {
 
   constructor(private http: HttpClient) { }
 
+  createPost({ title, content}) {
+    return this.http.post(this.baseUrl + '/posts.json',
+      { title, content });
+  }
+
   fetchPosts() {
     return this.http.get(
-      ''.concat(this.baseUrl, '/posts.json')
+      ''.concat(this.baseUrl, '/posts.json'),
+      {
+        headers: new HttpHeaders({ ninja: 'yes' }),
+        params: new HttpParams().append('print', 'pretty')
+      }
     )
       .pipe(
         map(responseObj => {
           return Object.keys(responseObj)
           .reduce(
-            (acc, curr) => acc = acc.concat(
+            (acc, curr) => acc.concat(
               { ...responseObj[curr], id: curr}
             ), []
           )}
         )
       )
+  }
+
+  deletePosts() {
+    return this.http.delete(this.baseUrl + '/posts.json');
   }
 
 

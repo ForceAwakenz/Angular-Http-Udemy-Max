@@ -1,6 +1,6 @@
 import { PostDataService } from './post-data.service';
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -10,23 +10,30 @@ import { HttpClient } from '@angular/common/http';
 export class AppComponent implements OnInit {
   loadedPosts = [];
 
-  constructor(
-    private http: HttpClient,
-    private postDataService: PostDataService) { }
+  constructor(private postDataService: PostDataService) { }
 
   ngOnInit() {}
 
   onCreatePost(postData: { title: string; content: string }) {
     // Send Http request
     console.log(postData);
+    this.postDataService.createPost(postData).subscribe(console.log);
   }
   
   onFetchPosts() {
     // Send Http request
-    this.postDataService.fetchPosts().subscribe(console.log);
+    this.postDataService.fetchPosts().subscribe(posts => {
+      this.loadedPosts = posts
+      console.log(posts);
+    },
+      (err: HttpErrorResponse) => {
+        console.warn(err)
+      });
   }
 
   onClearPosts() {
     // Send Http request
+    if (!this.loadedPosts.length) return;
+    this.postDataService.deletePosts().subscribe(console.log);
   }
 }
