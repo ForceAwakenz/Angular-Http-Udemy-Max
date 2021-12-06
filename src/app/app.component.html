@@ -54,4 +54,9 @@
       <p>No posts available!</p>
     </div>
   </div>
+  <div>
+    <ul>
+      <li *ngFor="let post of loadedPosts">{{post.title}}, {{post.content}}</li>
+    </ul>
+  </div>
 </div>
